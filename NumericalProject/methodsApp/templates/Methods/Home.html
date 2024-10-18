@@ -1,0 +1,21 @@
+{% extends 'layouts/nav_bar.html' %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+
+<h1 id='titulo1' class="flex items-center text-5xl font-extrabold dark:text-black">Metodos Numéricos</h1>
+
+<div>
+  <div>
+    <i id='icono2' class="fa fa-calculator"> Solución de ecuaciones de una variable</i>
+  </div>
+  <div id='ilera2' class="flex">
+    <form method="GET" action="{% url 'incremental_search' %}">
+      <button class="boton-comun" style="margin: 15px;">Busqueda incremental</button>
+    </form>
+
+  </div>
+</div>
+
+{% endblock %}
