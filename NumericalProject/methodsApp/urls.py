@@ -20,5 +20,7 @@ urlpatterns = [
     path('newton_rapshon/', newton_rapshon, name='Newton Rapshon'),
     # {URL} Método de Secante
     path('secante/', secante, name='Secante'),
+    # {URL} Método de Raices Múltiples
+    path('raices_multiples/', multiple_roots, name='Raices Multiples'),
     
 ]

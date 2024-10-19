@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante
+from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante, Raices_multiples
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -167,3 +167,29 @@ def secante(request):
     else:
         return render(request, 'Methods/secante.html',
                       {'page': 'layouts/nav_bar.html', 'titulo': 'Secante', 'alerta': 'Ok'})
+    
+
+# ---------- Raices Múltiples ----------
+
+def multiple_roots(request):
+    if request.method == 'GET':
+        return render(request,'Methods/raicesMultiples.html',
+                      {'titulo': 'Raices Multiples', 'alerta': 'Ok'})
+    #fx, xi, tol, k, et
+    if request.method == 'POST' and 'latexinput' in request.POST:
+        try:
+            expresion = request.POST['latexinput']
+            tol = float(request.POST['toleranciam'])
+            xi = float(request.POST['xi'])
+            k = int(request.POST['iteracionm'])
+            et = request.POST['tipoe']
+
+            tupla = Raices_multiples.multiple_roots(expresion, xi, tol, k, et)
+            return render(request, 'Methods/raicesMultiples.html',
+                          {'page': 'layouts/nav_bar.html', 'expresion': 'Raices Multiples', 'html': tupla[0], 'mensaje_m': tupla[1]})
+        except ValueError as e:
+            return render(request, 'Methods/raicesMultiples.html',
+                          {'page': 'layouts/nav_bar.html', 'mensaje': e, 'alerta': 'Fallo'})
+    else:
+        return render(request, 'Methods/raicesMultiples.html',
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'Raices Multiples', 'alerta': 'Ok'})
