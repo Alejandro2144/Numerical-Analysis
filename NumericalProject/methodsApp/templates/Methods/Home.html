@@ -8,7 +8,7 @@
 
 <div>
   <div>
-    <i id='icono2' class="fa fa-calculator"> Solución de ecuaciones de una variable</i>
+    <i id='icono2' class="fa fa-calculator"> Ecuaciones de una variable</i>
   </div>
   <div id='ilera2' class="flex">
     <form method="GET" action="{% url 'Busqueda Incremental' %}">
@@ -29,7 +29,9 @@
       {% csrf_token %}
       <button class="boton-comun" style="margin: 15px;">Newton Rapshon</button>
     </form>
-
+    <form method="GET" action="{% url 'Secante' %}">
+      <button class="boton-comun" style="margin: 15px;">Secante</button>
+    </form>
 
   </div>
 </div>

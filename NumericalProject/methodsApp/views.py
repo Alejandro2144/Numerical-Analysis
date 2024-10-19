@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon
+from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -122,7 +122,7 @@ def fixed_point(request):
 def newton_rapshon(request):
     if request.method == 'GET':
         return render(request, 'Methods/newtonRapshon.html',
-                      {'page': 'layouts/nav_bar.html', 'titulo': 'Incremental Search Method', 'alerta': 'Melo'})
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'Incremental Search Method', 'alerta': 'Ok'})
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expresion = request.POST['latexinput']
@@ -139,4 +139,31 @@ def newton_rapshon(request):
                           {'page': 'layouts/nav_bar.html', 'mensaje': e, 'alerta': 'Fallo'})
     else:
         return render(request, 'Methods/newtonRapshon.html',
-                      {'page': 'layouts/nav_bar.html', 'titulo': 'newton Rapshon Method', 'alerta': 'Melo'})
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'newton Rapshon Method', 'alerta': 'Ok'})
+
+# ---------- Secante ----------
+
+def secante(request):
+    if request.method == 'GET':
+        return render(request,'Methods/secante.html',
+                      {'titulo': 'secante', 'alerta': 'Ok'})
+    #Valores de entrada: Fx, x0, xi, tol, niter
+    if request.method == 'POST' and 'latexinput' in request.POST:
+        try:
+            expression = request.POST['latexinput']
+            tol = float(request.POST['toleranciam'])
+            x0 = float(request.POST['x0'])
+            xi = float(request.POST['xi'])
+            k = int(request.POST['iteracionm'])
+            et = request.POST['tipoe']
+        
+
+            tupla = Secante.secante(expression, xi, x0, tol, k,et)
+            return render(request, 'Methods/secante.html',
+                          {'page': 'layouts/nav_bar.html', 'expresion': 'Secante', 'html': tupla[0], 'mensaje_m': tupla[1]})
+        except ValueError as e:
+            return render(request, 'Methods/secante.html',
+                          {'page': 'layouts/nav_bar.html', 'mensaje': e, 'alerta': 'Fallo'})
+    else:
+        return render(request, 'Methods/secante.html',
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'Secante', 'alerta': 'Ok'})
