@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa
+from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -71,7 +71,7 @@ def biseccion(request):
 
 def false_rule(request):
     if request.method == 'GET':
-        return render(request,'Methods/FalseRule.html',
+        return render(request,'Methods/reglaFalsa.html',
                       {'page': 'layouts/nav_bar.html', 'titulo': 'False Rule Method', 'alerta': 'Ok'})
 
     if request.method == 'POST' and 'latexinput' in request.POST:
@@ -84,11 +84,35 @@ def false_rule(request):
             et = request.POST['tipoe']
 
             tupla = Regla_falsa.regla_falsa(expresion, a, b, et, tol, k)
-            return render(request, 'Methods/FalseRule.html',
+            return render(request, 'Methods/reglaFalsa.html',
                           {'page': 'layouts/nav_bar.html', 'expresion': 'False Rule Method', 'html': tupla[0], 'mensaje_m': tupla[1]})
         except ValueError as e:
-            return render(request, 'Methods/FalseRule.html',
+            return render(request, 'Methods/reglaFalsa.html',
                           {'page': 'layouts/nav_bar.html', 'mensaje': e, 'alerta': 'Fallo'})
     else:
-        return render(request, 'Methods/FalseRule.html',
+        return render(request, 'Methods/reglaFalsa.html',
                       {'page': 'layouts/nav_bar.html', 'titulo': 'False Rule Method', 'alerta': 'Ok'})
+
+# ---------- Punto Fijo ----------
+
+def fixed_point(request):
+    if request.method == 'GET':
+        return render(request,'Methods/puntoFijo.html',
+                      {'titulo': 'Punto Fijo', 'alerta': 'Ok'})
+    if request.method == 'POST' and 'latexinput' in request.POST:
+        try:
+            expression = request.POST['latexinput']
+            tol = float(request.POST['toleranciam'])
+            x0 = float(request.POST['xi'])
+            nmax = int(request.POST['iteracionm'])
+            et = request.POST['tipoe']
+
+            tupla = Punto_fijo.fixed_point(expression, x0, tol, nmax, et)
+            return render(request, 'Methods/puntoFijo.html',
+                          {'page': 'layouts/nav_bar.html', 'expression': 'Punto Fijo', 'html': tupla[0], 'mensaje_m': tupla[1]})
+        except ValueError as e:
+            return render(request, 'Methods/puntoFijo.html',
+                          {'page': 'layouts/nav_bar.html', 'mensaje': e, 'alerta': 'Fallo'})
+    else:
+        return render(request, 'Methods/puntoFijo.html',
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'Punto Fijo', 'alerta': 'Ok'})
