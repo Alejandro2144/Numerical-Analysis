@@ -16,5 +16,7 @@ urlpatterns = [
     path('regla_falsa/', false_rule, name='Regla Falsa'),
     # {URL} Método de punto fijo
     path('punto_fijo/', fixed_point, name='Punto Fijo'),
+    # {URL} Método de Newton Rapshon
+    path('newton_rapshon/', newton_rapshon, name='Newton Rapshon'),
     
 ]

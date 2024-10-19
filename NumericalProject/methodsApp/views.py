@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo
+from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -116,3 +116,27 @@ def fixed_point(request):
     else:
         return render(request, 'Methods/puntoFijo.html',
                       {'page': 'layouts/nav_bar.html', 'titulo': 'Punto Fijo', 'alerta': 'Ok'})
+
+# ---------- Newton Rapshon ----------
+
+def newton_rapshon(request):
+    if request.method == 'GET':
+        return render(request, 'Methods/newtonRapshon.html',
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'Incremental Search Method', 'alerta': 'Melo'})
+    if request.method == 'POST' and 'latexinput' in request.POST:
+        try:
+            expresion = request.POST['latexinput']
+            tol = float(request.POST['toleranciam'])
+            a = float(request.POST['ai'])
+            k = int(request.POST['iteracionm'])
+            et = request.POST['tipoe']
+
+            tupla = Newton_rapshon.newton_rapshon(expresion, a, tol, k, et)
+            return render(request, 'Methods/newtonRapshon.html',
+                          {'page': 'layouts/nav_bar.html', 'expresion': 'newton Rapshon Method', 'html': tupla[0], 'mensaje_m': tupla[1]})
+        except ValueError as e:
+            return render(request, 'Methods/newtonRapshon.html',
+                          {'page': 'layouts/nav_bar.html', 'mensaje': e, 'alerta': 'Fallo'})
+    else:
+        return render(request, 'Methods/newtonRapshon.html',
+                      {'page': 'layouts/nav_bar.html', 'titulo': 'newton Rapshon Method', 'alerta': 'Melo'})
