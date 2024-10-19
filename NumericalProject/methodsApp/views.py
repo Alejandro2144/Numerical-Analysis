@@ -13,6 +13,16 @@ def home_view(request):
             'titulo': 'Home',
             'alerta': 'Ok'
         })
+    
+
+# --------------------------------------- Graphing Machine --------------------------------------
+def graphing_machine(request):
+    if request.method == 'GET':
+        return render(request,'Methods/graficadora.html',
+                              {'titulo': 'Graficadora', 'alerta': 'Ok'})
+    if request.method == 'POST':
+        return render(request, 'Methods/graficadora.html',
+                      {'titulo': 'Graficadora', 'alerta': 'Ok'})
 
 # --------------------------------------- Methods --------------------------------------
 

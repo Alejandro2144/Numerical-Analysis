@@ -6,6 +6,11 @@ urlpatterns = [
     # Home 
     path('', home_view, name='Home'),
 
+    ##------ urlpattern for graph ------##
+
+    #Url para el metodo grafico
+    path('graphing_machine/', graphing_machine, name='Herramienta Graficadora'),
+
     ##------ urlpatterns for one variable equations ------##
 
     # {URL} Método de busqueda incremental
