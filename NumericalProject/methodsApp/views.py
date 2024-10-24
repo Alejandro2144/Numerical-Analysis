@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante, Raices_multiples
+from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante, Raices_multiples, Doolittle
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -25,6 +25,8 @@ def graphing_machine(request):
                       {'titulo': 'Graficadora', 'alerta': 'Ok'})
 
 # --------------------------------------- Methods --------------------------------------
+
+# ----------------- One variable equations ----------------
 
 # ---------- Búsqueda Incremental ----------
 
@@ -203,3 +205,27 @@ def multiple_roots(request):
     else:
         return render(request, 'Methods/raicesMultiples.html',
                       {'page': 'layouts/nav_bar.html', 'titulo': 'Raices Multiples', 'alerta': 'Ok'})
+    
+# ----------------- Systems of equations ----------------
+
+# ---------- Doolittle ----------
+
+def doolittle(request):
+    if request.method == 'POST':
+        rows = float(request.POST.get('rows'))
+        cols = float(request.POST.get('cols'))
+        
+        matrix = []
+        for i in range(int(rows)):
+            row = []
+            for j in range(int(cols)):
+                val = request.POST.get(f'cell_{i}_{j}')
+                row.append(float(val) if val else 0.0)
+            matrix.append(row)
+        
+        # Llamada a la función doolittle
+        result = Doolittle.doolittle_function(matrix)
+
+        return render(request, 'Methods/doolittle.html', {'matrix': matrix, 'result': result})
+
+    return render(request, 'Methods/doolittle.html')
