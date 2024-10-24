@@ -3,7 +3,18 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante, Raices_multiples, Doolittle, Crout
+from .Methods import (
+    Busqueda_incremental,
+    Biseccion,
+    Regla_falsa,
+    Punto_fijo,
+    Newton_rapshon,
+    Secante,
+    Raices_multiples,
+    Doolittle,
+    Crout,
+    Cholesky
+)
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -15,14 +26,14 @@ def home_view(request):
         })
     
 
-# --------------------------------------- Graphing Machine --------------------------------------
-def graphing_machine(request):
+# --------------------------------------- Desmos --------------------------------------
+def desmos(request):
     if request.method == 'GET':
-        return render(request,'Methods/graficadora.html',
-                              {'titulo': 'Graficadora', 'alerta': 'Ok'})
+        return render(request,'Methods/desmos.html',
+                              {'titulo': 'Desmos', 'alerta': 'Ok'})
     if request.method == 'POST':
-        return render(request, 'Methods/graficadora.html',
-                      {'titulo': 'Graficadora', 'alerta': 'Ok'})
+        return render(request, 'Methods/desmos.html',
+                      {'titulo': 'Desmos', 'alerta': 'Ok'})
 
 # --------------------------------------- Methods --------------------------------------
 
@@ -214,19 +225,15 @@ def doolittle(request):
     if request.method == 'POST':
         rows = float(request.POST.get('rows'))
         cols = float(request.POST.get('cols'))
-        
         matrix = []
         for i in range(int(rows)):
             row = []
             for j in range(int(cols)):
                 val = request.POST.get(f'cell_{i}_{j}')
                 row.append(float(val) if val else 0.0)
-            matrix.append(row)
-        
+            matrix.append(row)   
         result = Doolittle.doolittle_function(matrix)
-
         return render(request, 'Methods/doolittle.html', {'matrix': matrix, 'result': result})
-    
     return render(request, 'Methods/doolittle.html')
 
 # ---------- Crout ----------
@@ -235,7 +242,6 @@ def crout(request):
     if request.method == 'POST':
         rows = int(request.POST.get('rows'))
         cols = int(request.POST.get('cols'))
-
         matrix = []
         for i in range(rows):
             row = []
@@ -243,9 +249,28 @@ def crout(request):
                 val = request.POST.get(f'cell_{i}_{j}')
                 row.append(int(val) if val else 0)
             matrix.append(row)
-
         result = Crout.crout(matrix)
-
         return render(request, 'Methods/crout.html', {'matrix': matrix, 'result': result})
-
     return render(request, 'Methods/crout.html')
+
+# ---------- Cholesky ----------
+
+def cholesky(request):
+    if request.method == 'POST':
+        rows = int(request.POST.get('rows'))
+        cols = int(request.POST.get('cols'))
+        matrix = []
+        for i in range(rows):
+            row = []
+            for j in range(cols):
+                val = request.POST.get(f'cell_{i}_{j}')
+                row.append(float(val) if val else 0)
+            matrix.append(row)
+        try:
+            result = Cholesky.cholesky(matrix)
+            return render(request, 'Methods/Cholesky.html', {'matrix': matrix, 'result': result})
+        except ValueError as e:
+            error_message = str(e)
+            print("Error:", error_message)
+            return render(request, 'Methods/Cholesky.html',  {'alerta': 'Fallo', 'mensaje': error_message})
+    return render(request, 'Methods/cholesky.html')

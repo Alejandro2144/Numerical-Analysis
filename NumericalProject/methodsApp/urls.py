@@ -6,10 +6,10 @@ urlpatterns = [
     # Home 
     path('', home_view, name='Home'),
 
-    ##------ urlpattern for graph ------##
+    ##------ urlpattern for desmos ------##
 
     #Url para el metodo grafico
-    path('graphing_machine/', graphing_machine, name='Desmos'),
+    path('desmos/', desmos, name='Desmos'),
 
     ##------ urlpatterns for one variable equations ------##
 
@@ -34,4 +34,6 @@ urlpatterns = [
     path('doolittle/', doolittle, name='doolittle_matrix'),
     # {URL} Método de Crout
     path('crout/', crout, name='crout_matrix'),
+    # {URL} Método de Cholesky
+    path('cholesky/', cholesky, name='cholesky_matrix'),
 ]
