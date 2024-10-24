@@ -13,7 +13,8 @@ from .Methods import (
     Raices_multiples,
     Doolittle,
     Crout,
-    Cholesky
+    Cholesky,
+    Jacobi
 )
 
 # -------------------------------------- Homepage --------------------------------------
@@ -274,3 +275,93 @@ def cholesky(request):
             print("Error:", error_message)
             return render(request, 'Methods/Cholesky.html',  {'alerta': 'Fallo', 'mensaje': error_message})
     return render(request, 'Methods/cholesky.html')
+
+# ---------- Jacobi ----------
+
+def jacobi(request):
+    if request.method == 'POST':
+        try:
+            # Obtener el número de filas/columnas
+            num_filas = int(request.POST.get('rows'))
+
+            # Obtener valores de la matriz A
+            matriz_coeficientes = []
+            for i in range(num_filas):
+                fila = []
+                for j in range(num_filas):
+                    val = request.POST.get(f'cell_{i}_{j}')
+                    fila.append(float(val) if val else 0.0)
+                matriz_coeficientes.append(fila)
+
+            # Obtener valores del vector B
+            vector_independiente = [
+                float(request.POST.get(f'b_{i}', 0)) for i in range(num_filas)
+            ]
+
+            # Obtener valores del vector X0 (vector inicial)
+            vector_inicial = [
+                float(request.POST.get(f'x0_{i}', 0)) for i in range(num_filas)
+            ]
+
+            # Validar tolerancia y número de iteraciones
+            try:
+                tolerancia = float(request.POST.get('tol'))
+                if tolerancia <= 0:
+                    raise ValueError("La tolerancia debe ser un número positivo.")
+            except ValueError as e:
+                return render(
+                    request, 
+                    'Methods/jacobi.html',
+                    {'alerta': 'Fallo', 'mensaje': f"Tolerancia inválida: {str(e)}"}
+                )
+
+            iteraciones_maximas = int(request.POST.get('niter'))
+            if iteraciones_maximas <= 0:
+                return render(
+                    request, 
+                    'Methods/jacobi.html',
+                    {'alerta': 'Fallo', 'mensaje': "El número de iteraciones debe ser mayor que 0"}
+                )
+
+            # Ejecutar el método de Jacobi
+            html, resultado, iteraciones_realizadas = Jacobi.ejecutar_jacobi(
+                matriz_coeficientes, 
+                vector_independiente, 
+                vector_inicial, 
+                tolerancia, 
+                iteraciones_maximas
+            )
+
+            # Verificar convergencia: matriz diagonalmente dominante o con radio espectral < 1
+            if not Jacobi.es_diagonalmente_dominante(np.array(matriz_coeficientes)) and \
+               not Jacobi.tiene_radio_espectral_menor_que_uno(np.array(matriz_coeficientes)):
+                return render(
+                    request, 
+                    'Methods/jacobi.html',
+                    {
+                        'alerta': 'Fallo',
+                        'mensaje': 'La matriz no es diagonalmente dominante ni cumple con el radio espectral',
+                        'result': resultado,
+                        'iteraciones': iteraciones_realizadas
+                    }
+                )
+
+            # Renderizar resultados si todo está bien
+            return render(
+                request, 
+                'Methods/jacobi.html',
+                {'result': resultado, 'iteraciones': iteraciones_realizadas, 'html': html}
+            )
+
+        except Exception as e:
+            # Mostrar el error en la consola para depuración
+            print(f"Error: {e}")
+            return render(
+                request, 
+                'Methods/jacobi.html',
+                {'alerta': 'Fallo', 'mensaje': 'Ha ocurrido un error inesperado.'}
+            )
+
+    # Renderizar la página inicialmente
+    return render(request, 'Methods/jacobi.html')
+

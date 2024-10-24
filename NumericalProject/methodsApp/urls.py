@@ -36,4 +36,6 @@ urlpatterns = [
     path('crout/', crout, name='crout_matrix'),
     # {URL} Método de Cholesky
     path('cholesky/', cholesky, name='cholesky_matrix'),
+    # {URL} Método de Jacobi
+    path('jacobi/', jacobi, name='Jacobi'),
 ]
