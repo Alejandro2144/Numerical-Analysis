@@ -9,7 +9,7 @@ urlpatterns = [
     ##------ urlpattern for graph ------##
 
     #Url para el metodo grafico
-    path('graphing_machine/', graphing_machine, name='Herramienta Graficadora'),
+    path('graphing_machine/', graphing_machine, name='Desmos'),
 
     ##------ urlpatterns for one variable equations ------##
 
