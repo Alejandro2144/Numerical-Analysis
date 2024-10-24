@@ -14,7 +14,8 @@ from .Methods import (
     Doolittle,
     Crout,
     Cholesky,
-    Jacobi
+    Jacobi,
+    Gauss_seidel
 )
 
 # -------------------------------------- Homepage --------------------------------------
@@ -365,3 +366,79 @@ def jacobi(request):
     # Renderizar la página inicialmente
     return render(request, 'Methods/jacobi.html')
 
+# ---------- Gauss Seidel ----------
+
+def gauss_seidel(request):
+    if request.method == 'POST':
+        try:
+            # Validar número de filas
+            rows = int(request.POST.get('rows'))
+            if rows <= 0:
+                raise ValueError("El número de filas debe ser mayor que 0.")
+
+            # Obtener y validar la matriz A
+            matrix = []
+            for i in range(rows):
+                row = []
+                for j in range(rows):
+                    val = request.POST.get(f'cell_{i}_{j}')
+                    try:
+                        row.append(float(val) if val else 0.0)
+                    except ValueError:
+                        raise ValueError(f"Valor inválido en la celda {i},{j}")
+                matrix.append(row)
+
+            # Obtener y validar el vector B
+            vector_b = []
+            for i in range(rows):
+                val = request.POST.get(f'b_{i}')
+                try:
+                    vector_b.append(float(val) if val else 0.0)
+                except ValueError:
+                    raise ValueError(f"Valor inválido en el vector B, posición {i}")
+
+            # Obtener y validar el vector X0
+            vector_x0 = []
+            for i in range(rows):
+                val = request.POST.get(f'x0_{i}')
+                try:
+                    vector_x0.append(float(val) if val else 0.0)
+                except ValueError:
+                    raise ValueError(f"Valor inválido en el vector X0, posición {i}")
+
+            # Validar tolerancia y número de iteraciones
+            try:
+                tol = float(request.POST.get('tol'))
+                if tol <= 0:
+                    raise ValueError("La tolerancia debe ser mayor que 0.")
+            except ValueError:
+                return render(request, 'Methods/gausSeidel.html', 
+                              {'alerta': 'Fallo', 'mensaje': "Tolerancia inválida"})
+
+            iter = int(request.POST.get('iter'))
+            if iter <= 0:
+                return render(request, 'Methods/gausSeidel.html', 
+                              {'alerta': 'Fallo', 'mensaje': "El número de iteraciones debe ser mayor que 0"})
+
+            # Ejecutar el método de Gauss-Seidel
+            result, n, html = Gauss_seidel.Gauss_Seidel(matrix, vector_b, vector_x0, tol, iter)
+
+            # Verificar si la matriz es diagonalmente dominante o cumple con el radio espectral
+            if not Gauss_seidel.diagonal_dominante(np.array(matrix)) and not Gauss_seidel.radio_espectral(np.array(matrix)):
+                return render(request, 'Methods/gausSeidel.html',
+                              {'alerta': 'Fallo', 
+                               'mensaje': 'La matriz no es diagonalmente dominante y no cumple con el radio espectral',
+                               'result': result, 'iteraciones': n})
+
+            # Mostrar los resultados si todo está bien
+            return render(request, 'Methods/gausSeidel.html', 
+                          {'result': result, 'iteraciones': n, 'html': html})
+
+        except Exception as e:
+            # Mostrar mensaje de error para depuración
+            print(f"Error: {e}")
+            return render(request, 'Methods/gausSeidel.html', 
+                          {'alerta': 'Fallo', 'mensaje': f'Error: {str(e)}'})
+
+    # Renderizar la página inicialmente
+    return render(request, 'Methods/gausSeidel.html')

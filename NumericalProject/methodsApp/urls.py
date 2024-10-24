@@ -38,4 +38,6 @@ urlpatterns = [
     path('cholesky/', cholesky, name='cholesky_matrix'),
     # {URL} Método de Jacobi
     path('jacobi/', jacobi, name='Jacobi'),
+    # {URL} Método de Gauss Seidel
+    path('gauss_seidel/', gauss_seidel, name='gauss_seidel_matrix'),
 ]
