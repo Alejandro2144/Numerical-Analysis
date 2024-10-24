@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.conf import settings
-from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante, Raices_multiples, Doolittle
+from .Methods import Busqueda_incremental, Biseccion, Regla_falsa, Punto_fijo, Newton_rapshon, Secante, Raices_multiples, Doolittle, Crout
 
 # -------------------------------------- Homepage --------------------------------------
 def home_view(request):
@@ -223,9 +223,29 @@ def doolittle(request):
                 row.append(float(val) if val else 0.0)
             matrix.append(row)
         
-        # Llamada a la función doolittle
         result = Doolittle.doolittle_function(matrix)
 
         return render(request, 'Methods/doolittle.html', {'matrix': matrix, 'result': result})
-
+    
     return render(request, 'Methods/doolittle.html')
+
+# ---------- Crout ----------
+
+def crout(request):
+    if request.method == 'POST':
+        rows = int(request.POST.get('rows'))
+        cols = int(request.POST.get('cols'))
+
+        matrix = []
+        for i in range(rows):
+            row = []
+            for j in range(cols):
+                val = request.POST.get(f'cell_{i}_{j}')
+                row.append(int(val) if val else 0)
+            matrix.append(row)
+
+        result = Crout.crout(matrix)
+
+        return render(request, 'Methods/crout.html', {'matrix': matrix, 'result': result})
+
+    return render(request, 'Methods/crout.html')

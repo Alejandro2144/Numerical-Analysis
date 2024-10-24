@@ -29,5 +29,9 @@ urlpatterns = [
     path('raices_multiples/', multiple_roots, name='Raices Multiples'),
     
     ##------ urlpatterns for systems of equations  ------##
+
+    # {URL} Método de Doolittle
     path('doolittle/', doolittle, name='doolittle_matrix'),
+    # {URL} Método de Crout
+    path('crout/', crout, name='crout_matrix'),
 ]
