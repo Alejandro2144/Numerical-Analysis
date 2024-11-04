@@ -77,25 +77,25 @@
             <form method="post" action="/cholesky/">
                 {% csrf_token %}
                 <div class="section">
-                    <input type="text" name="rows" placeholder="Filas" id="rows" class="form-control mb-3" required>
-                    <input type="text" name="cols" placeholder="Columnas" id="cols" class="form-control mb-3"
+                    <input type="text" name="rows" placeholder="Rows" id="rows" class="form-control mb-3" required>
+                    <input type="text" name="cols" placeholder="Columns" id="cols" class="form-control mb-3"
                         required>
-                    <button type="button" onclick="createMatrix()" class="btn btn-primary">Crear Matriz</button>
+                    <button type="button" onclick="createMatrix()" class="btn btn-primary">Create matrix</button>
 
                 </div>
 
                 <div id="matrix" class="matrix-inputs"></div>
                 <div class="section">
-                    <button type="submit" class="btn btn-primary">Calcular</button>
+                    <button type="submit" class="btn btn-primary">Calculate</button>
                 </div>
             </form>
         </div>
         <!-- Right Side: Results -->
         <div class="results-container right-container">
-            <h1>Resultado de Cholesky</h1>
+            <h1>Cholesky result</h1>
             <br>
             <div class="section">
-                <h2>Matriz recibida:</h2>
+                <h2>Received matrix:</h2>
                 <br>
                 <table>
                     {% for row in matrix %}
@@ -109,7 +109,7 @@
             </div>
 
             <div class="section">
-                <h2>Resultado L:</h2>
+                <h2>Result L:</h2>
                 <div class="result-matrix">
                     <table>
                         {% for row in result %}
@@ -133,7 +133,7 @@
             const cols = parseInt(document.getElementById('cols').value);
 
             if (!rows || !cols) {
-                alert('Ingresa valores válidos para filas y columnas.');
+                alert('Ingresa valores válidos para Rows y Columns.');
                 return;
             }
 

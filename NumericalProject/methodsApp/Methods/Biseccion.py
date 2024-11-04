@@ -3,7 +3,7 @@ import pandas as pd
 import sympy
 
 def biseccion(fx: str, a: float, b: float, tol: float, niter: int, et: str) -> tuple:
-    registros = []  # Lista para almacenar las iteraciones
+    registros = []  # Lista para almacenar las Iterations
 
     sympy_exp = latex2sympy(fx)
     fn = sympy.sympify(sympy_exp)
@@ -14,14 +14,14 @@ def biseccion(fx: str, a: float, b: float, tol: float, niter: int, et: str) -> t
     if fa * fb > 0:
         raise ValueError('La función debe cambiar de signo en el intervalo.')
 
-    if et == 'Decimales Correctos':
+    if et == 'Correct decimals':
         er = sympy.Abs(b - a)
-    elif et == 'Cifras Significativas':
+    elif et == 'Significant figures':
         if a == 0:
             raise ValueError("El valor de 'a' no puede ser 0 para evitar divisiones por 0")
         er = sympy.Abs((b - a) / a)
     else:
-        raise ValueError('Tipo de error no reconocido.')
+        raise ValueError('Type of error no reconocido.')
 
     i = 1
     c = a  # Inicializa el punto medio
@@ -40,14 +40,14 @@ def biseccion(fx: str, a: float, b: float, tol: float, niter: int, et: str) -> t
             a = c
             fa = fc
 
-        if et == 'Decimales Correctos':
+        if et == 'Correct decimals':
             er = sympy.Abs(b - a)
-        elif et == 'Cifras Significativas':
+        elif et == 'Significant figures':
             if a == 0:
                 raise ValueError("El valor de 'a' no puede ser 0 para evitar divisiones por 0.")
             er = sympy.Abs((b - a) / a)
 
-        registros.append({'Iteraciones': i, 'a': a, 'b': b, 'f(c)': fc, 'Error': er})
+        registros.append({'Iterations': i, 'a': a, 'b': b, 'f(c)': fc, 'Error': er})
         i += 1
 
     tabla = pd.DataFrame(registros)

@@ -5,8 +5,8 @@ import math
 
 def fixed_point(gx: str, x0: float, tol: float, nmax: int, et: str) -> tuple:
     table = pd.DataFrame(columns=['Valor de G(xi)', 'Valor de xi', 'Error'])
-    if et != 'Decimales Correctos' and et != 'Cifras Significativas':
-        raise ValueError('El tipo de error no es valido')
+    if et != 'Correct decimals' and et != 'Significant figures':
+        raise ValueError('El Type of error no es valido')
 
     try:
         sympy_exp = latex2sympy(gx)
@@ -26,7 +26,7 @@ def fixed_point(gx: str, x0: float, tol: float, nmax: int, et: str) -> tuple:
             if math.isnan(xact):
                 raise ValueError('La función no es valida')
 
-            if et == 'Decimales Correctos':
+            if et == 'Correct decimals':
                 error = abs(xact - xant)
             else:
                 error = abs(xact - xant) / abs(xact)
@@ -38,6 +38,6 @@ def fixed_point(gx: str, x0: float, tol: float, nmax: int, et: str) -> tuple:
 
     html = table.to_html()
     if n >= nmax:
-        return (html, 'El metodo falló en {} iteraciones'.format(nmax))
+        return (html, 'El metodo falló en {} Iterations'.format(nmax))
     else:
         return (html, 'El metodo convergió a la solución {} con un error menor a {}'.format(xant, tol))

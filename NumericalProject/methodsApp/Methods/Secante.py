@@ -4,7 +4,7 @@ import sympy
 import math
 
 def secante(fx: str, xi: float, x0: float, tol: float, niter: int, et: str) -> tuple:
-    tabla = pd.DataFrame(columns=['Iteraciones', 'Xi', 'f(xi)', 'Error'])
+    tabla = pd.DataFrame(columns=['Iterations', 'Xi', 'f(xi)', 'Error'])
 
     try:
         # Interpretar la función desde LaTeX a SymPy
@@ -21,11 +21,11 @@ def secante(fx: str, xi: float, x0: float, tol: float, niter: int, et: str) -> t
     if math.isclose(f0, fi, abs_tol=1e-12):
         raise ValueError('Los valores iniciales producen una división por cero.')
 
-    # Registrar las dos primeras iteraciones
-    tabla = tabla._append({'Iteraciones': 0, 'Xi': x0, 'f(xi)': f0, 'Error': ""}, ignore_index=True)
-    tabla = tabla._append({'Iteraciones': 1, 'Xi': xi, 'f(xi)': fi, 'Error': ""}, ignore_index=True)
+    # Registrar las dos primeras Iterations
+    tabla = tabla._append({'Iterations': 0, 'Xi': x0, 'f(xi)': f0, 'Error': ""}, ignore_index=True)
+    tabla = tabla._append({'Iterations': 1, 'Xi': xi, 'f(xi)': fi, 'Error': ""}, ignore_index=True)
 
-    n = 2  # Contador de iteraciones
+    n = 2  # Contador de Iterations
     er = tol + 1  # Inicialización del error para entrar al ciclo
 
     # Bucle de iteración
@@ -34,7 +34,7 @@ def secante(fx: str, xi: float, x0: float, tol: float, niter: int, et: str) -> t
         if math.isclose(f0 - fi, 0, abs_tol=1e-12):
             raise ValueError('División por cero detectada en el cálculo de la secante.')
 
-        # Calcular la nueva aproximación usando la fórmula de la secante
+        # Calculate la nueva aproximación usando la fórmula de la secante
         try:
             xm = xi - (fi * (x0 - xi) / (f0 - fi))
         except ZeroDivisionError:
@@ -46,16 +46,16 @@ def secante(fx: str, xi: float, x0: float, tol: float, niter: int, et: str) -> t
         if math.isnan(fxm):
             raise ValueError('La función devolvió NaN durante la iteración.')
 
-        # Calcular el error basado en el tipo especificado
-        if et == 'Decimales Correctos':
+        # Calculate el error basado en el tipo especificado
+        if et == 'Correct decimals':
             er = sympy.Abs(xm - xi)
-        elif et == 'Cifras Significativas':
+        elif et == 'Significant figures':
             er = sympy.Abs((xm - xi) / xm)
         else:
-            raise ValueError('Error en el tipo de error.')
+            raise ValueError('Error en el Type of error.')
 
         # Registrar la iteración en la tabla
-        tabla = tabla._append({'Iteraciones': n, 'Xi': xm, 'f(xi)': fxm, 'Error': er}, ignore_index=True)
+        tabla = tabla._append({'Iterations': n, 'Xi': xm, 'f(xi)': fxm, 'Error': er}, ignore_index=True)
 
         # Actualizar valores para la siguiente iteración
         x0, xi = xi, xm
@@ -67,6 +67,6 @@ def secante(fx: str, xi: float, x0: float, tol: float, niter: int, et: str) -> t
 
     # Verificar si el método convergió o falló
     if er < tol:
-        return html, f'El método convergió a la solución {xm} en {n - 1} iteraciones'
+        return html, f'El método convergió a la solución {xm} en {n - 1} Iterations'
     else:
-        return html, f'El método falló en {niter} iteraciones'
+        return html, f'El método falló en {niter} Iterations'

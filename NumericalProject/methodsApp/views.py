@@ -50,7 +50,7 @@ def incremental_search(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expresion = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             a = float(request.POST['ai'])
             #b = float(request.POST['bi'])
             k = int(request.POST['iteracionm'])
@@ -76,7 +76,7 @@ def biseccion(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expression = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             a = float(request.POST['a'])
             b = float(request.POST['b'])
             k = int(request.POST['iteracionm'])
@@ -102,7 +102,7 @@ def false_rule(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expresion = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             a = float(request.POST['ai'])
             b = float(request.POST['bi'])
             k = int(request.POST['iteracionm'])
@@ -127,7 +127,7 @@ def fixed_point(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expression = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             x0 = float(request.POST['xi'])
             nmax = int(request.POST['iteracionm'])
             et = request.POST['tipoe']
@@ -151,7 +151,7 @@ def newton_rapshon(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expresion = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             a = float(request.POST['ai'])
             k = int(request.POST['iteracionm'])
             et = request.POST['tipoe']
@@ -176,7 +176,7 @@ def secante(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expression = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             x0 = float(request.POST['x0'])
             xi = float(request.POST['xi'])
             k = int(request.POST['iteracionm'])
@@ -204,7 +204,7 @@ def multiple_roots(request):
     if request.method == 'POST' and 'latexinput' in request.POST:
         try:
             expresion = request.POST['latexinput']
-            tol = float(request.POST['toleranciam'])
+            tol = float(request.POST['Tolerancem'])
             xi = float(request.POST['xi'])
             k = int(request.POST['iteracionm'])
             et = request.POST['tipoe']
@@ -282,55 +282,55 @@ def cholesky(request):
 def jacobi(request):
     if request.method == 'POST':
         try:
-            # Obtener el número de filas/columnas
-            num_filas = int(request.POST.get('rows'))
+            # Obtener el número de Rows/Columns
+            num_Rows = int(request.POST.get('rows'))
 
             # Obtener valores de la matriz A
             matriz_coeficientes = []
-            for i in range(num_filas):
+            for i in range(num_Rows):
                 fila = []
-                for j in range(num_filas):
+                for j in range(num_Rows):
                     val = request.POST.get(f'cell_{i}_{j}')
                     fila.append(float(val) if val else 0.0)
                 matriz_coeficientes.append(fila)
 
             # Obtener valores del vector B
             vector_independiente = [
-                float(request.POST.get(f'b_{i}', 0)) for i in range(num_filas)
+                float(request.POST.get(f'b_{i}', 0)) for i in range(num_Rows)
             ]
 
             # Obtener valores del vector X0 (vector inicial)
             vector_inicial = [
-                float(request.POST.get(f'x0_{i}', 0)) for i in range(num_filas)
+                float(request.POST.get(f'x0_{i}', 0)) for i in range(num_Rows)
             ]
 
-            # Validar tolerancia y número de iteraciones
+            # Validar Tolerance y número de Iterations
             try:
-                tolerancia = float(request.POST.get('tol'))
-                if tolerancia <= 0:
-                    raise ValueError("La tolerancia debe ser un número positivo.")
+                Tolerance = float(request.POST.get('tol'))
+                if Tolerance <= 0:
+                    raise ValueError("La Tolerance debe ser un número positivo.")
             except ValueError as e:
                 return render(
                     request, 
                     'Methods/jacobi.html',
-                    {'alerta': 'Fallo', 'mensaje': f"Tolerancia inválida: {str(e)}"}
+                    {'alerta': 'Fallo', 'mensaje': f"Tolerance inválida: {str(e)}"}
                 )
 
-            iteraciones_maximas = int(request.POST.get('niter'))
-            if iteraciones_maximas <= 0:
+            Iterations_maximas = int(request.POST.get('niter'))
+            if Iterations_maximas <= 0:
                 return render(
                     request, 
                     'Methods/jacobi.html',
-                    {'alerta': 'Fallo', 'mensaje': "El número de iteraciones debe ser mayor que 0"}
+                    {'alerta': 'Fallo', 'mensaje': "El número de Iterations debe ser mayor que 0"}
                 )
 
             # Ejecutar el método de Jacobi
-            html, resultado, iteraciones_realizadas = Jacobi.ejecutar_jacobi(
+            html, resultado, Iterations_realizadas = Jacobi.ejecutar_jacobi(
                 matriz_coeficientes, 
                 vector_independiente, 
                 vector_inicial, 
-                tolerancia, 
-                iteraciones_maximas
+                Tolerance, 
+                Iterations_maximas
             )
 
             # Verificar convergencia: matriz diagonalmente dominante o con radio espectral < 1
@@ -343,7 +343,7 @@ def jacobi(request):
                         'alerta': 'Fallo',
                         'mensaje': 'La matriz no es diagonalmente dominante ni cumple con el radio espectral',
                         'result': resultado,
-                        'iteraciones': iteraciones_realizadas
+                        'Iterations': Iterations_realizadas
                     }
                 )
 
@@ -351,7 +351,7 @@ def jacobi(request):
             return render(
                 request, 
                 'Methods/jacobi.html',
-                {'result': resultado, 'iteraciones': iteraciones_realizadas, 'html': html}
+                {'result': resultado, 'Iterations': Iterations_realizadas, 'html': html}
             )
 
         except Exception as e:
@@ -371,10 +371,10 @@ def jacobi(request):
 def gauss_seidel(request):
     if request.method == 'POST':
         try:
-            # Validar número de filas
+            # Validar número de Rows
             rows = int(request.POST.get('rows'))
             if rows <= 0:
-                raise ValueError("El número de filas debe ser mayor que 0.")
+                raise ValueError("El número de Rows debe ser mayor que 0.")
 
             # Obtener y validar la matriz A
             matrix = []
@@ -406,19 +406,19 @@ def gauss_seidel(request):
                 except ValueError:
                     raise ValueError(f"Valor inválido en el vector X0, posición {i}")
 
-            # Validar tolerancia y número de iteraciones
+            # Validar Tolerance y número de Iterations
             try:
                 tol = float(request.POST.get('tol'))
                 if tol <= 0:
-                    raise ValueError("La tolerancia debe ser mayor que 0.")
+                    raise ValueError("La Tolerance debe ser mayor que 0.")
             except ValueError:
                 return render(request, 'Methods/gausSeidel.html', 
-                              {'alerta': 'Fallo', 'mensaje': "Tolerancia inválida"})
+                              {'alerta': 'Fallo', 'mensaje': "Tolerance inválida"})
 
             iter = int(request.POST.get('iter'))
             if iter <= 0:
                 return render(request, 'Methods/gausSeidel.html', 
-                              {'alerta': 'Fallo', 'mensaje': "El número de iteraciones debe ser mayor que 0"})
+                              {'alerta': 'Fallo', 'mensaje': "El número de Iterations debe ser mayor que 0"})
 
             # Ejecutar el método de Gauss-Seidel
             result, n, html = Gauss_seidel.Gauss_Seidel(matrix, vector_b, vector_x0, tol, iter)
@@ -428,11 +428,11 @@ def gauss_seidel(request):
                 return render(request, 'Methods/gausSeidel.html',
                               {'alerta': 'Fallo', 
                                'mensaje': 'La matriz no es diagonalmente dominante y no cumple con el radio espectral',
-                               'result': result, 'iteraciones': n})
+                               'result': result, 'Iterations': n})
 
             # Mostrar los resultados si todo está bien
             return render(request, 'Methods/gausSeidel.html', 
-                          {'result': result, 'iteraciones': n, 'html': html})
+                          {'result': result, 'Iterations': n, 'html': html})
 
         except Exception as e:
             # Mostrar mensaje de error para depuración

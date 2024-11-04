@@ -18,9 +18,9 @@ def busqueda_incremental(fx: str, a: float, tol: float, k: int):
     
     x1 = a
     x2 = x1 + tol
-    iteraciones = 0
+    Iterations = 0
 
-    while iteraciones <= k:
+    while Iterations <= k:
         y1 = fn.subs({'x': x1})
         y2 = fn.subs({'x': x2})
 
@@ -33,10 +33,10 @@ def busqueda_incremental(fx: str, a: float, tol: float, k: int):
         
         x1 = x2
         x2 = x1 + tol
-        iteraciones += 1
+        Iterations += 1
     html = tabla.to_html()
     
     if tabla.empty:
-        return (html, f'El método falló en {iteraciones} iteraciones')
+        return (html, f'El método falló en {Iterations} Iterations')
     else:
-        return (html, f'El método convergió a la solución en {iteraciones} iteraciones')
+        return (html, f'El método convergió a la solución en {Iterations} Iterations')

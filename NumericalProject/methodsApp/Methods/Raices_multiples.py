@@ -6,8 +6,8 @@ import math
 
 def multiple_roots(fx: str, xi: float, tol: float, k: int, et: str) -> tuple:
     tabla = pd.DataFrame(columns=['Valor de F(xi)', 'Valor de xi', 'Error'])
-    if et != 'Decimales Correctos' and et != 'Cifras Significativas':
-        raise ValueError('El tipo de error no es valido')
+    if et != 'Correct decimals' and et != 'Significant figures':
+        raise ValueError('El Type of error no es valido')
 
     try:
         sympy_exp = latex2sympy(fx)
@@ -39,7 +39,7 @@ def multiple_roots(fx: str, xi: float, tol: float, k: int, et: str) -> tuple:
 
             xi_1 = xi - (fxi * fxi_1) / ((fxi_1 ** 2) - (fxi * fxi_2))
 
-            if et == 'Decimales Correctos':
+            if et == 'Correct decimals':
                 error = abs(xi_1 - xi)
             else:
                 error = abs(xi_1 - xi) / abs(xi_1)
@@ -51,7 +51,7 @@ def multiple_roots(fx: str, xi: float, tol: float, k: int, et: str) -> tuple:
 
     html = tabla.to_html()
     if n >= k:
-        return (html, 'El metodo fallo en {} iteraciones'.format(k))
+        return (html, 'El metodo fallo en {} Iterations'.format(k))
     else:
         return (html, 'El metodo convergio a la solución {} con un error menor a {}'.format(xi_1, tol))
 

@@ -13,10 +13,10 @@ def newton_rapshon(fx: str, a: float, tol: float, k: int, et: str) -> tuple:
         raise ValueError('La funcion no es valida')
     
     x = a
-    iteraciones = 0
+    Iterations = 0
     
-    while iteraciones < k:
-        # Calcular valor de la derivada
+    while Iterations < k:
+        # Calculate valor de la derivada
         y_prime = df.subs({'x': x})
 
         # Verificar si la derivada es muy cercana a cero
@@ -30,9 +30,9 @@ def newton_rapshon(fx: str, a: float, tol: float, k: int, et: str) -> tuple:
         x_next = x - x_act / y_prime
 
         # Calculamos el error
-        if et == 'Decimales Correctos':
+        if et == 'Correct decimals':
             error = sympy.Abs(x_next - x)
-        elif et == 'Cifras Significativas':
+        elif et == 'Significant figures':
             error = sympy.Abs((x_next - x) / x)
         else:
             raise ValueError('Error en error')
@@ -42,14 +42,14 @@ def newton_rapshon(fx: str, a: float, tol: float, k: int, et: str) -> tuple:
 
         # Actualizamos la aproximacion para la siguiente iteracion
         x = x_next
-        iteraciones += 1
+        Iterations += 1
 
         if error < tol:
             break
     
     html = tabla.to_html()
 
-    if iteraciones >= k:
-        return (html, 'El metodo fallo en {} iteraciones'.format(k))
+    if Iterations >= k:
+        return (html, 'El metodo fallo en {} Iterations'.format(k))
     else:
-        return (html, f'El metodo convergio a la solucion en la iteración {iteraciones}')
+        return (html, f'El metodo convergio a la solucion en la iteración {Iterations}')

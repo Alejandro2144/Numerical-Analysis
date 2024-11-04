@@ -93,28 +93,28 @@
             <form method="post" action="/gauss_seidel/">
                 {% csrf_token %}
                 <div class="section">
-                    <input type="number" name="rows" placeholder="Filas" id="rows" class="form-control mb-3" required>
-                    <input type="number" name="iter" placeholder="Iteraciones" id="iter" class="form-control mb-3" required>
-                    <input name="tol" id="tol" type="text" placeholder="Tolerancia" class="form-control mb-3" required>
-                    <button type="button" onclick="createMatrix()" class="btn btn-primary">Crear Matriz</button>
+                    <input type="number" name="rows" placeholder="Rows" id="rows" class="form-control mb-3" required>
+                    <input type="number" name="iter" placeholder="Iterations" id="iter" class="form-control mb-3" required>
+                    <input name="tol" id="tol" type="text" placeholder="Tolerance" class="form-control mb-3" required>
+                    <button type="button" onclick="createMatrix()" class="btn btn-primary">Create matrix</button>
                 </div>
 
                 <div id="matrix" class="matrix-inputs" style="margin-left: 5%"></div>
 
-                <!-- Nuevo: Botones para crear vectores B y X0 -->
+                <!-- Nuevo: Botones para Create vectores B y X0 -->
                 <div class="section">
-                    <button type="button" onclick="createVector('B')" class="btn btn-secondary">Crear Vector B</button>
+                    <button type="button" onclick="createVector('B')" class="btn btn-secondary">Create vector B</button>
                     <div class="section">
                         <div id="b" style="margin-left: 40%; margin-right: 40%"></div>
                     </div>
-                    <button type="button" onclick="createVector('X0')" class="btn btn-secondary">Crear Vector X0</button>
+                    <button type="button" onclick="createVector('X0')" class="btn btn-secondary">Create vector X0</button>
                     <div class="section">
                         <div id="x0" style="margin-left: 40%; margin-right: 40%"></div>
                     </div>
                 </div>
 
                 <div class="section">
-                    <button type="submit" class="btn btn-primary" style="margin-bottom: 5%">Calcular</button>
+                    <button type="submit" class="btn btn-primary" style="margin-bottom: 5%">Calculate</button>
                 </div>
             </form>
         </div>
@@ -135,8 +135,8 @@
                         {% endfor %}
                     </table>
             </div>
-            <h3>Numero de Iteraciones</h3>
-            <h5 style="margin-left: 5%">{{ iteraciones }}</h5>
+            <h3>Number of iterations</h3>
+            <h5 style="margin-left: 5%">{{ Iterations }}</h5>
 
             <div class="my-div">
                 <table class="styled-table">
@@ -154,7 +154,7 @@
             const cols = rows
 
             if (!rows || !cols) {
-                alert('Ingresa valores válidos para filas y columnas.');
+                alert('Ingresa valores válidos para Rows y Columns.');
                 return;
             }
 
@@ -185,7 +185,7 @@
             const rows = parseInt(document.getElementById('rows').value);
 
             if (!rows) {
-                alert('Ingresa un valor válido para filas.');
+                alert('Ingresa un valor válido para Rows.');
                 return;
             }
 

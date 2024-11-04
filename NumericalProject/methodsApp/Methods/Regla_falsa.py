@@ -11,14 +11,14 @@ def regla_falsa(fx: str, a: float, b: float, et: bool, tol: float, k: int) -> tu
         fx: Cadena en formato LaTeX con la función a evaluar.
         a: Cota inferior del intervalo donde se busca la raíz.
         b: Cota superior del intervalo donde se busca la raíz.
-        et: Bandera para indicar el tipo de error (no se usa en esta implementación).
-        tol: Tolerancia del error.
-        k: Número máximo de iteraciones.
+        et: Bandera para indicar el Type of error (no se usa en esta implementación).
+        tol: Tolerance del error.
+        k: Número máximo de Iterations.
 
     Returns:
         Una tupla con el HTML de la tabla y un mensaje sobre la convergencia.
     """
-    registros = []  # Lista para almacenar los registros de las iteraciones.
+    registros = []  # Lista para almacenar los registros de las Iterations.
 
     # Parseo y validación de la función.
     try:
@@ -40,7 +40,7 @@ def regla_falsa(fx: str, a: float, b: float, et: bool, tol: float, k: int) -> tu
 
     error = tol + 1  # Inicialización del error para entrar al ciclo.
     xm_1 = 0  # Valor anterior de xm.
-    n = 0  # Contador de iteraciones.
+    n = 0  # Contador de Iterations.
 
     # Ciclo principal del método.
     while error > tol and n < k:
@@ -70,6 +70,6 @@ def regla_falsa(fx: str, a: float, b: float, et: bool, tol: float, k: int) -> tu
 
     # Verifica si el método logró converger.
     if n >= k:
-        return html, f'El método falló en {k} iteraciones'
+        return html, f'El método falló en {k} Iterations'
     else:
         return html, f'El método convergió a la solución {xm} con un error menor a {tol}'

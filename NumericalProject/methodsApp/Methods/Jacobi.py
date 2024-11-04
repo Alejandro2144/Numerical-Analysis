@@ -31,13 +31,13 @@ def ejecutar_jacobi(A, B, X0, tol, niter):
     - A: Matriz de coeficientes.
     - B: Vector de términos independientes.
     - X0: Vector inicial de aproximación.
-    - tol: Tolerancia para la convergencia.
-    - niter: Número máximo de iteraciones.
+    - tol: Tolerance para la convergencia.
+    - niter: Número máximo de Iterations.
 
     Retorna:
-    - html: Tabla en formato HTML con las iteraciones.
+    - html: Tabla en formato HTML con las Iterations.
     - resultado: Vector solución.
-    - n: Número de iteraciones realizadas.
+    - n: Número de Iterations realizadas.
     """
     df = pd.DataFrame()
 
@@ -49,20 +49,20 @@ def ejecutar_jacobi(A, B, X0, tol, niter):
     dimension = np.shape(A)[0]
     X = np.copy(X0)
 
-    n = 0  # Contador de iteraciones
-    er = tol + 1  # Error inicial (mayor que la tolerancia)
+    n = 0  # Contador de Iterations
+    er = tol + 1  # Error inicial (mayor que la Tolerance)
 
     # Bucle iterativo del método de Jacobi
     while n < niter and er > tol:
         Xn = np.copy(X)  # Copia del vector actual
         for i in range(dimension):
             suma = sum(A[i, j] * X[j] for j in range(dimension) if j != i)  # Suma de elementos no diagonales
-            Xn[i] = (B[i] - suma) / A[i, i]  # Calcular la nueva aproximación para X[i]
+            Xn[i] = (B[i] - suma) / A[i, i]  # Calculate la nueva aproximación para X[i]
 
-        # Calcular el error entre la nueva y la anterior aproximación
+        # Calculate el error entre la nueva y la anterior aproximación
         er = np.max(np.abs(np.dot(A, Xn) - B))  
         X = Xn  # Actualizar el vector de aproximaciones
-        n += 1  # Incrementar el contador de iteraciones
+        n += 1  # Incrementar el contador de Iterations
 
         # Agregar la iteración al DataFrame
         df = df._append(pd.Series(X, name=n))
