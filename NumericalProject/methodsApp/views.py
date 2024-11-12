@@ -15,7 +15,8 @@ from .Methods import (
     Crout,
     Cholesky,
     Jacobi,
-    Gauss_seidel
+    Gauss_seidel,
+    LU_Simple_Gaussiana,
 )
 
 # -------------------------------------- Homepage --------------------------------------
@@ -220,6 +221,40 @@ def multiple_roots(request):
                       {'page': 'layouts/nav_bar.html', 'titulo': 'Raices Multiples', 'alerta': 'Ok'})
     
 # ----------------- Systems of equations ----------------
+
+# ---------- LU Simple Gaussiana ----------
+
+def lu_simple_gaussiana_view(request):
+    if request.method == 'POST':
+        try:
+            rows = int(request.POST.get('rows'))
+            cols = int(request.POST.get('cols'))
+            if rows != cols:
+                error_message = "La matriz debe ser cuadrada para realizar la descomposición LU."
+                return render(request, 'Methods/lu_simple_gaussiana.html', {'alerta': 'Fallo', 'mensaje': error_message})
+            matrix = []
+            for i in range(rows):
+                row = []
+                for j in range(cols):
+                    val = request.POST.get(f'cell_{i}_{j}')
+                    row.append(float(val) if val else 0.0)
+                matrix.append(row)
+            # Obtener el vector b
+            vector_b = []
+            for i in range(rows):
+                val = request.POST.get(f'b_{i}')
+                if val is None:
+                    raise ValueError("Debe ingresar todos los elementos del vector b.")
+                vector_b.append(float(val))
+            # Realizar la descomposición LU y resolver el sistema
+            result = LU_Simple_Gaussiana.lu_simple_gaussiana(matrix)
+            solution = LU_Simple_Gaussiana.resolve_lu(result[0], result[1], vector_b)
+            return render(request, 'Methods/luSimpleGauss.html', {'matrix': matrix, 'vector_b': vector_b, 'result': result, 'solution': solution})
+        except Exception as e:
+            error_message = str(e)
+            return render(request, 'Methods/luSimpleGauss.html', {'alerta': 'Fallo', 'mensaje': error_message})
+    return render(request, 'Methods/luSimpleGauss.html')
+
 
 # ---------- Doolittle ----------
 

@@ -43,6 +43,9 @@
       <i id='icono3' class="fa fa-sort-numeric-up"> Systems of Equations</i>
     </div>
     <div id='ilera3' class="flex">
+      <form method="GET" action="{% url 'lu_simple_gaussiana' %}">
+        <button class="boton-comun" style="margin: 15px;">LU Simple Gaussiana</button>
+    </form>     
       <form method="GET" action="{% url 'doolittle_matrix' %}">
         <button class="boton-comun" style="margin: 15px;">Doolittle</button>
       </form>
