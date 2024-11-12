@@ -17,6 +17,7 @@ from .Methods import (
     Jacobi,
     Gauss_seidel,
     LU_Simple_Gaussiana,
+    Gaussian_pivoting
 )
 
 # -------------------------------------- Homepage --------------------------------------
@@ -222,9 +223,9 @@ def multiple_roots(request):
     
 # ----------------- Systems of equations ----------------
 
-# ---------- LU Simple Gaussiana ----------
+# ---------- LU Simple Gaussiana ---------- #
 
-def lu_simple_gaussiana_view(request):
+def lu_simple_gaussiana(request):
     if request.method == 'POST':
         try:
             rows = int(request.POST.get('rows'))
@@ -255,6 +256,59 @@ def lu_simple_gaussiana_view(request):
             return render(request, 'Methods/luSimpleGauss.html', {'alerta': 'Fallo', 'mensaje': error_message})
     return render(request, 'Methods/luSimpleGauss.html')
 
+# ---------- Gaussian Pivoting ---------- #
+
+def gaussian_pivoting(request):
+    if request.method == 'POST':
+        try:
+            # Obtener el número de filas y columnas (debe ser cuadrada)
+            rows = int(request.POST.get('rows'))
+            cols = int(request.POST.get('cols'))
+            if rows != cols:
+                error_message = "La matriz debe ser cuadrada para realizar eliminación gaussiana."
+                return render(request, 'Methods/gaussianPivoting.html', {
+                    'alerta': 'Fallo',
+                    'mensaje': error_message
+                })
+
+            # Construir la matriz A
+            matrix = []
+            for i in range(rows):
+                row = []
+                for j in range(cols):
+                    val = request.POST.get(f'cell_{i}_{j}')
+                    row.append(float(val) if val else 0.0)
+                matrix.append(row)
+
+            # Construir el vector b
+            vector_b = []
+            for i in range(rows):
+                val = request.POST.get(f'b_{i}')
+                if val is None:
+                    raise ValueError("Debe ingresar todos los elementos del vector b.")
+                vector_b.append(float(val))
+
+            # Convertir a arreglos de numpy para pasarlos a la función de pivoteo
+            A = np.array(matrix, dtype=float)
+            b = np.array(vector_b, dtype=float)
+
+            # Resolver el sistema utilizando eliminación gaussiana con pivoteo
+            solution = Gaussian_pivoting.gausPartialPivot(A, b).tolist()  # Convertir a lista
+
+            return render(request, 'Methods/gaussianPivoting.html', {
+                'matrix': matrix,
+                'vector_b': vector_b,
+                'solution': solution
+            })
+
+        except Exception as e:
+            error_message = str(e)
+            return render(request, 'Methods/gaussianPivoting.html', {
+                'alerta': 'Fallo',
+                'mensaje': error_message
+            })
+
+    return render(request, 'Methods/gaussianPivoting.html')
 
 # ---------- Doolittle ----------
 

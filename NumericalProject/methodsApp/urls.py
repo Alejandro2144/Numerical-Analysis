@@ -14,7 +14,9 @@ urlpatterns = [
     ##------ urlpatterns for one variable equations ------##
 
     # {URL} Método de LU Simple Gauss
-    path('lu_simple_gaussiana/', lu_simple_gaussiana_view, name='lu_simple_gaussiana'),
+    path('lu_simple_gaussiana/', lu_simple_gaussiana, name='lu_simple_gaussiana'),
+    # {URL} Método de Guassian con pivoteo
+    path('gaussian_pivoting/', gaussian_pivoting, name='gaussian_pivoting'),
     # {URL} Método de busqueda incremental
     path('incrementalSearch/', incremental_search, name='Busqueda Incremental'),
     # {URL} Método de biseccion
